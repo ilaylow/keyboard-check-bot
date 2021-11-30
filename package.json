@@ -1,0 +1,23 @@
+{
+  "name": "keebs-check",
+  "version": "1.0.0",
+  "description": "checks keyboard stock",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilaylow/keyboard-check-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilaylow/keyboard-check-bot/issues"
+  },
+  "homepage": "https://github.com/ilaylow/keyboard-check-bot#readme",
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0"
+  }
+}
