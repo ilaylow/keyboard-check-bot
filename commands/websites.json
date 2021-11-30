@@ -1,0 +1,20 @@
+{
+    "websites": [
+        {
+            "name": "Durock POM Switches",
+            "alias": "durockpom",
+            "websites": [
+                "https://swagkeys.com/collections/switches/products/durock-pom-switch",
+                "https://www.switchkeys.com.au/collections/switches/products/durock-pom-linear-switches-x10"
+            ]
+        },
+        {
+            "name": "Krytox 205g0 Lubricant",
+            "alias": "krytox205g0",
+            "websites": [
+                "https://swagkeys.com/products/krytox-gpl-205g0?_pos=2&_sid=50245aeb4&_ss=r",
+                "https://www.switchkeys.com.au/products/krytox-205g0-5ml"
+            ] 
+        }
+    ]
+}
