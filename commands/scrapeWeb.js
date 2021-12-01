@@ -8,10 +8,10 @@ async function scrapeSwagKeys(link){
   const buyButton = pretty($(".btn__text").html());
 
   if (buyButton.toLowerCase() !== "sold out"){
-      return "Great news! It's **in-stock** at ";
+      return true;
   }
   else{
-      return "Unfortunately, it's currently **out of stock** at ";
+      return false;
   }
 }
 
@@ -23,10 +23,10 @@ async function scrapeSwitchKeys(link){
     let search = buyButton.search("Addtocart");
     
     if (search === -1){
-        return "Unfortunately, it's currently out of stock at ";
+        return false;
     }
     else{
-        return "Great news! It's **in-stock** at ";
+        return true;
     }
 }
 
