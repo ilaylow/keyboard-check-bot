@@ -3,17 +3,36 @@
         {
             "name": "Durock POM Switches",
             "alias": "durockpom",
-            "websites": [
-                "https://swagkeys.com/collections/switches/products/durock-pom-switch",
-                "https://www.switchkeys.com.au/collections/switches/products/durock-pom-linear-switches-x10"
+            "vendors": [
+                {"vendor": "swagkeys", "link": "https://swagkeys.com/collections/switches/products/durock-pom-switch"},
+                {"vendor": "switchkeys", "link":"https://www.switchkeys.com.au/collections/switches/products/durock-pom-linear-switches-x10"}
             ]
         },
         {
             "name": "Krytox 205g0 Lubricant",
             "alias": "krytox205g0",
-            "websites": [
-                "https://swagkeys.com/products/krytox-gpl-205g0?_pos=2&_sid=50245aeb4&_ss=r",
-                "https://www.switchkeys.com.au/products/krytox-205g0-5ml"
+            "vendors": [
+                {"vendor": "swagkeys", "link": "https://swagkeys.com/products/krytox-gpl-205g0?_pos=2&_sid=50245aeb4&_ss=r"},
+                {"vendor": "switchkeys", "link":"https://www.switchkeys.com.au/products/krytox-205g0-5ml"},
+                {"vendor": "dailyclack", "link":"https://dailyclack.com/collections/stabilisers/products/lube-205g0"}
+            ] 
+        },
+        {
+            "name": "Banana Split Swtiches TKC",
+            "alias": "bananasplit",
+            "vendors": [
+                {"vendor": "swagkeys", "link": "https://swagkeys.com/products/c-equalz-banana-split-switch-macho"},
+                {"vendor": "switchkeys", "link":"https://www.switchkeys.com.au/products/banana-splits"},
+                {"vendor": "tkc", "link":"https://thekey.company/products/c3-equalz-x-tkc-banana-split-switches"}
+            ] 
+        },
+        {
+            "name": "Lavendar Linear Switches",
+            "alias": "lavender",
+            "vendors": [
+                {"vendor": "dailyclack", "link": "https://dailyclack.com/products/lavender-linear-switches?_pos=5&_sid=854df0bdf&_ss=r"},
+                {"vendor": "swagkeys", "link": "https://swagkeys.com/products/lavender-switch"},
+                {"vendor": "cannonkeys", "link": "https://cannonkeys.com/products/lavender-linear-switch"}
             ] 
         }
     ]

@@ -9,7 +9,7 @@ const botCommands = require('./commands');
 
 // Logins in the bot with the token
 const TOKEN = process.env.TOKEN;
-bot.login("OTE1MTUwMjY5NjgyMTc2MDgw.YaXaGg.9soTePNSdKrpY3FdviQdTp5DsSs");
+bot.login(TOKEN);
 
 // Maps the bot commands to the corresponding names, e.g. maps 'ping' to ping command. {"ping": execute ping}
 Object.keys(botCommands).map(key => {

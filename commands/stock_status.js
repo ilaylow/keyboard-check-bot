@@ -3,11 +3,11 @@ const data = require('./websites.json');
 
 module.exports = {
     name: 'status',
-    description: 'Gets the stock status of the Durock POM Linear Switches from different vendors and provides the link',
-    execute(msg, args) {
-        let switchType = args[0].toLowerCase();
+    description: 'Gets the stock status of an item from different vendors and provides the link',
+    async execute(msg, args) {
+        let objType = args[0].toLowerCase();
 
-        const websiteObj = data.websites.find((e) => e.alias === switchType)
+        const websiteObj = data.websites.find((e) => e.alias === objType)
         if (!websiteObj){
           msg.reply("Can't check the status of that object as it does not exist. Perform **~help status** for available objects!");
           return;
@@ -15,38 +15,52 @@ module.exports = {
         
         msg.reply('Checking stock for you...');
 
-        const swagKeysLink = websiteObj.websites[0];
-        const switchKeysLink = websiteObj.websites[1];
-
-        let websiteArr = [swagKeysLink, switchKeysLink];
-
-        let inStock = false;
         let stockArr = [];
-        scrapeFunctions.scrapeSwagKeys(swagKeysLink)
-        .then((response) => {inStock = inStock || response; stockArr.push(response); console.log(response)}
-        );
+        let websiteArr = [];
 
-        scrapeFunctions.scrapeSwitchKeys(switchKeysLink)
-        .then((response) => {inStock = inStock || response; stockArr.push(response); console.log(response)}
-        );
-        // TODO: FIX THIS 
-        // Due to the asynchronous nature of promises, you cannot use the promises to set something and use that later, the promises will
-        // execute concurrently you smartass
-        console.log(inStock);
-        let reply;
-        if (inStock){
-          reply += "Great news! It's **in stock** in at least one of the available locations below:\n";
-          for (let i = 0; i < stockArr.length; i++){
-              let stockString = "**Out of Stock**: "
-              if (stockArr[i]){
-                stockString = "**In Stock**: "
-              }
-              reply += "- " + stockString + websiteArr[i] + "\n";
+        for (const i in websiteObj.vendors){
+          const element = websiteObj.vendors[i];
+          websiteArr.push(element.link);
+        
+          switch (element.vendor){
+            case "swagkeys":
+              let resSwagKeys = await scrapeFunctions.scrapeSwagKeys(element.link);
+              stockArr.push(resSwagKeys);
+              break;
+            case "switchkeys":
+              let resSwitchKeys = await scrapeFunctions.scrapeSwitchKeys(element.link);
+              stockArr.push(resSwitchKeys);
+              break;
+            case "tkc":
+              let resTKC = await scrapeFunctions.scrapeTKC(element.link);
+              stockArr.push(resTKC);
+              break;
+            case "dailyclack":
+              let resDaily = await scrapeFunctions.scrapeDailyClack(element.link);
+              stockArr.push(resDaily);
+              break;
+            case "cannonkeys":
+              let resCannon = await scrapeFunctions.scrapeCannonKeys(element.link);
+              stockArr.push(resCannon);
+              break;
           }
-
-        } else {
-          reply = "Oops... it's unfortunately **Out of stock** in all locations..."
         }
+
+        console.log(stockArr);
+
+        let reply = "";
+        if (stockArr.includes(true)){
+          reply += "Great news! It's **in stock** in at least one of the available locations below:\n";
+        } else {
+          reply = "Oops... it's unfortunately **Out of stock** in **all** of the locations below...\n";
+        }
+        for (let i = 0; i < stockArr.length; i++){
+          let stockString = "**Out of Stock**: "
+          if (stockArr[i]){
+            stockString = "**In Stock**: "
+          }
+          reply += "- " + stockString + "<" + websiteArr[i] + ">" + "\n";
+      }
 
         msg.reply(reply);
 

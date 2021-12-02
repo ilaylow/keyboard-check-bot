@@ -30,7 +30,49 @@ async function scrapeSwitchKeys(link){
     }
 }
 
+async function scrapeTKC(link){
+    const html = await axios.get(link);
+  const $ = await cheerio.load(html.data);
+  const buyButton = pretty($(".btn__text").html());
+
+  if (buyButton.toLowerCase() !== "sold out"){
+      return true;
+  }
+  else{
+      return false;
+  }
+}
+
+async function scrapeDailyClack(link){
+    const html = await axios.get(link);
+  const $ = await cheerio.load(html.data);
+  const buyButton = pretty($("#AddToCartText-product-template").html());
+
+  if (buyButton.toLowerCase() !== "sold out"){
+      return true;
+  }
+  else{
+      return false;
+  }
+}
+
+async function scrapeCannonKeys(link){
+    const html = await axios.get(link);
+  const $ = await cheerio.load(html.data);
+  const buyButton = pretty($("#AddToCartText-product-template").html());
+
+  if (buyButton.toLowerCase() !== "sold out"){
+      return true;
+  }
+  else{
+      return false;
+  }
+}
+
 module.exports = {
     scrapeSwagKeys,
-    scrapeSwitchKeys
+    scrapeSwitchKeys,
+    scrapeTKC,
+    scrapeDailyClack,
+    scrapeCannonKeys
 }
