@@ -9,6 +9,14 @@
             ]
         },
         {
+            "name": "Durock V2 Stabilizers",
+            "alias": "durockstabs",
+            "vendors": [
+                {"vendor": "dailyclack", "link": "https://dailyclack.com/products/durock-v2-screw-in-stabilisers"},
+                {"vendor": "switchkeys", "link":"https://www.switchkeys.com.au/products/durock-pcb-mount-screw-in-stabilisers-v2"}
+            ]
+        },
+        {
             "name": "Krytox 205g0 Lubricant",
             "alias": "krytox205g0",
             "vendors": [
