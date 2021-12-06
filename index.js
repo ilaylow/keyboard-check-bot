@@ -19,7 +19,7 @@ Object.keys(botCommands).map(key => {
 // When the bot has logged in successfully
 bot.on('ready', () => {
     console.info(`Logged in as ${bot.user.tag}!`);
-    bot.user.setPresence({ activities: [{ name: 'Mama Fauna', type: "WATCHING" }], status: 'available' });
+    bot.user.setPresence({ activities: [{ name: 'Mama Fauna', type: "WATCHING", url: "https://www.youtube.com/channel/UCO_aKKYxn4tvrqPjcTzZ6EQ" }], status: 'available'});
 });
 
 
