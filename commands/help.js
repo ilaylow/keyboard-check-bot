@@ -5,12 +5,15 @@ module.exports = {
     description: 'Shows available commands and how to use them!',
     execute(msg, args) {
       if (args.length == 0){
-          msg.reply('The list of available commands are as follows:\n - ~status [object-name]. To learn how to use this, type ~help status\n');
+          msg.reply('The list of available commands are as follows:\n\
+          - **stockstatus [object]**. To see how to use this in more detail, type **~help stockstatus**.\n\
+          - **getrotation**. Gets the current rotation of Champions in League of Legends.\n\
+          - **summonerstatus [summoner_name]**. Gets important info regarding a specific summoner in League of Legends.');
       }
       else{
           switch (args[0]){
               
-              case "status":
+              case "stockstatus":
                   let items = [];
                   data.websites.forEach(element => items.push(element.alias));
 

@@ -8,7 +8,7 @@ bot.commands = new Discord.Collection();
 const botCommands = require('./commands');
 
 // Logins in the bot with the token
-const TOKEN = process.env.TOKEN;
+const TOKEN = process.env.BOT_TOKEN;
 bot.login(TOKEN);
 
 // Maps the bot commands to the corresponding names, e.g. maps 'ping' to ping command. {"ping": execute ping}
@@ -19,7 +19,9 @@ Object.keys(botCommands).map(key => {
 // When the bot has logged in successfully
 bot.on('ready', () => {
     console.info(`Logged in as ${bot.user.tag}!`);
-  });
+    bot.user.setPresence({ activities: [{ name: 'Mama Fauna', type: "WATCHING" }], status: 'available' });
+});
+
 
   // Bot listens to an event of message
 bot.on('message', msg => {

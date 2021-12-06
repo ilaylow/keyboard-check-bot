@@ -1,5 +1,7 @@
 module.exports = {
     Ping: require('./ping'),
-    GetStockStatus: require('./stock_status'),
-    Help: require("./help")
+    GetStockStatus: require('./stockStatus'),
+    Help: require("./help"),
+    SummonerStatus: require('./summonerStatus'),
+    ChampionRotation: require('./getRotation')
   };

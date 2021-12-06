@@ -1,7 +1,7 @@
 {
-  "name": "keebs-check",
+  "name": "personal-bot",
   "version": "1.0.0",
-  "description": "checks keyboard stock",
+  "description": "Does Funky Shiz For The Convenience Of Me",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,24 +9,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ilaylow/keyboard-check-bot.git"
+    "url": "git+https://github.com/ilaylow/personal-discord-bot.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ilaylow/keyboard-check-bot/issues"
+    "url": "https://github.com/ilaylow/personal-discord-bot/issues"
   },
-  "homepage": "https://github.com/ilaylow/keyboard-check-bot#readme",
+  "homepage": "https://github.com/ilaylow/personal-discord-bot#readme",
   "dependencies": {
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
+    "kayn": "^0.10.2",
     "pretty": "^2.0.0",
     "request-promise": "^4.2.6"
   },
   "engines": {
     "node": "16.x",
     "npm": "7.x"
- }
+  }
 }

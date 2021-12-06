@@ -1,8 +1,8 @@
-const scrapeFunctions = require('./scrapeWeb');
+const scrapeFunctions = require('../helper/scrapeWeb');
 const data = require('./websites.json');
 
 module.exports = {
-    name: 'status',
+    name: 'stockstatus',
     description: 'Gets the stock status of an item from different vendors and provides the link',
     async execute(msg, args) {
         let objType = args[0].toLowerCase();
