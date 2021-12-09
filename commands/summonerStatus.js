@@ -8,7 +8,7 @@ module.exports = {
 
 
         msg.reply("Looking up details for Summmoner: " + "**" + summonerId + "**");
-        leagueFunctions.getSummonerDetails(summonerId);
-
+        const response = await leagueFunctions.getSummonerDetails(summonerId);
+        msg.reply("Recent games: " + response);
     },
   };
