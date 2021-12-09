@@ -125,7 +125,6 @@ async function getRotationList(){
             for (const j in champions.data){
                 const champion = champions.data[j];
                 if (champion.key == id){
-                    console.log("YES");
                     championNames.push(champion.name);
                     break;
                 }
@@ -145,7 +144,6 @@ async function inRotation(championName){
     const currList = await getRotationList();
     let newList = [];
     for (const i in currList) {newList.push(currList[i].toLowerCase())}
-    console.log(newList);
 
     if (newList.includes(championName)) return true;
     return false;
