@@ -2,11 +2,11 @@ const leagueFunctions = require('../helper/obtainLeagueDetails');
 
 module.exports = {
     name: 'getrotation',
-    description: 'Gets current rotation of champions in League Of Legends',
+    description: 'Gets current rotation of champions in League of Legends',
     async execute(msg, args) {
 
-        const currList = await leagueFunctions.getCurrentRotation();
-        msg.reply("The current free champions this rotation are:\n -" + currList);
+        const rotationList = await leagueFunctions.getRotationList();
+        msg.reply("The current free champions this rotation are:\n -" + rotationList);
         
     },
   };

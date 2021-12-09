@@ -1,7 +1,6 @@
 const riotKey = process.env.RIOT_TOKEN;
 const numMatches = 10;
 const axios = require("axios");
-const getRotation = require("../commands/getRotation");
 const champions = require("../data/champion.json");
 const items = require("../data/item.json");
 const runes = require("../data/runesReforged.json");
@@ -112,7 +111,7 @@ async function getSummonerNameFromUUID(uuid){
 
 }
 
-async function getCurrentRotation(){
+async function getRotationList(){
 
     const getRotationLink = "https://oc1.api.riotgames.com/lol/platform/v3/champion-rotations"
     try {
@@ -143,14 +142,18 @@ async function getCurrentRotation(){
 }
 
 async function inRotation(championName){
-    const currList = getCurrentRotation();
-    const newList = currList.map(name => name.toLowerCase());
+    const currList = await getRotationList();
+    let newList = [];
+    for (const i in currList) {newList.push(currList[i].toLowerCase())}
+    console.log(newList);
+
     if (newList.includes(championName)) return true;
     return false;
 }
 
 module.exports = {
+    getRotationList,
     getSummonerDetails,
-    getCurrentRotation
+    inRotation
 }
 
