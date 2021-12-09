@@ -18,7 +18,8 @@ async function getSummonerDetails(summonerName){
         
         const requestMatchlink = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=50`;
         const resMatch = await axios.get(requestMatchlink, {headers: headerObj});
-
+        
+        
         console.log(resMatch.data);
         return resMatch.data;
 
