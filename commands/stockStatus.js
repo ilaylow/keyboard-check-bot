@@ -1,5 +1,5 @@
 const scrapeFunctions = require('../helper/scrapeWeb');
-const data = require('./websites.json');
+const data = require('../data/websites.json');
 
 module.exports = {
     name: 'stockstatus',
