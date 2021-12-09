@@ -1,6 +1,11 @@
 const riotKey = process.env.RIOT_TOKEN;
 const numMatches = 10;
 const axios = require("axios");
+const getRotation = require("../commands/getRotation");
+const champions = require("../data/champion.json");
+const items = require("../data/item.json");
+const runes = require("../data/runesReforged.json");
+
 const headerObj = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
     "Accept-Language": "en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -36,8 +41,7 @@ async function getSummonerDetails(summonerName){
             
             let teams = {'win': [], 'lose': []};
             for (const j in participants){
-
-                if (participants[j].summonerName === summonerName){
+                if (participants[j].summonerName.toLowerCase() === summonerName.toLowerCase()){
                     summonerInfo.push(participants[j]);
                 }
 
@@ -62,12 +66,16 @@ async function getSummonerDetails(summonerName){
 
     } catch(err){
         console.error(err);
+        if (err.response.statusText === "Not Found"){
+            return "Summoner not found. Please enter a valid name!";
+        }
+        return err;
     }
 
 }
 
 function processSummonerInfo(infoList){
-    let summary = {"champions": [], "outcome": [], "runes":[], "items": [], "kills":[], "deaths": [], "assists": []};
+    let summary = {"champions": [], "outcome": [], "runes":[], "items": [], "kills":[], "deaths": [], "assists": [], "score": []};
     for (const i in infoList){
         const game = infoList[i];
         summary["champions"].push(game.championName);
@@ -82,6 +90,7 @@ function processSummonerInfo(infoList){
         summary["kills"].push(game.kills);
         summary["deaths"].push(game.deaths);
         summary["assists"].push(game.assists);
+        summary["score"].push(`[K: ${game.kills} D:${game.deaths} A:${game.assists}]`);
     }
 
     return summary;
@@ -89,12 +98,10 @@ function processSummonerInfo(infoList){
 
 function convertToPrintable(summonerInfo){
     let reply = "";
-    reply += "Here's the information collected after analyzing your past " + numMatches + " games.\n\n";
-    reply += `- You've played these champions in the order listed: **${summonerInfo["champions"]}**\n`
-    reply += `- You've won/lost in this order: **${summonerInfo["outcome"]}**\n`
-    reply += `- You got this many kills in the respective order: **${summonerInfo["kills"]}**\n`
-    reply += `- You've died this many times in the same order: **${summonerInfo["deaths"]}**\n`
-    reply += `- You've either gotten ksed or assisted this many times: **${summonerInfo["assists"]}**\n`;
+    reply += `Here's the information collected after analyzing your past **${numMatches}** games.\n\n`;
+    reply += `- You've played these **champions** in the order listed: **${summonerInfo["champions"]}**\n`
+    reply += `- You've **won/lost** in this order: **${summonerInfo["outcome"]}**\n`
+    reply += `- Your **score** in the same order: **${summonerInfo["score"]}**\n`
 
     reply += "\nMore analysis can and will be done in this information, more to come soon!";
 
@@ -106,7 +113,40 @@ async function getSummonerNameFromUUID(uuid){
 }
 
 async function getCurrentRotation(){
-    
+
+    const getRotationLink = "https://oc1.api.riotgames.com/lol/platform/v3/champion-rotations"
+    try {
+        const res = (await axios.get(getRotationLink, {headers: headerObj})).data;
+        const idList = res.freeChampionIds;
+        console.log(res);
+        let championNames = []
+        
+        for (const i in idList){
+            const id = idList[i];
+            for (const j in champions.data){
+                const champion = champions.data[j];
+                if (champion.key == id){
+                    console.log("YES");
+                    championNames.push(champion.name);
+                    break;
+                }
+            }
+        }
+
+        console.log(championNames);
+        return championNames;
+    } catch (err){
+        //console.error(err);
+        return "Something went wrong...";
+    }
+
+}
+
+async function inRotation(championName){
+    const currList = getCurrentRotation();
+    const newList = currList.map(name => name.toLowerCase());
+    if (newList.includes(championName)) return true;
+    return false;
 }
 
 module.exports = {

@@ -5,10 +5,8 @@ module.exports = {
     description: 'Gets current rotation of champions in League Of Legends',
     async execute(msg, args) {
 
-
-        msg.reply("The current rotation is...");
         const currList = await leagueFunctions.getCurrentRotation();
-        msg.reply(currList);
+        msg.reply("The current free champions this rotation are:\n -" + currList);
         
     },
   };
