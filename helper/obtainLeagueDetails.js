@@ -91,7 +91,7 @@ function processSummonerInfo(infoList){
         summary["assists"].push(game.assists);
         summary["score"].push(`[K: ${game.kills} D:${game.deaths} A:${game.assists}]`);
     }
-
+    
     return summary;
 }
 
@@ -102,9 +102,41 @@ function convertToPrintable(summonerInfo){
     reply += `- You've **won/lost** in this order: **${summonerInfo["outcome"]}**\n`
     reply += `- Your **score** in the same order: **${summonerInfo["score"]}**\n`
 
+    const winRatio = calculateWinRatio(summonerInfo["outcome"]);
+    reply += `- Your **win ratio** for the past **${numMatches}** games is: **${winRatio}%**.\n`;
+
+    const mostFrequentChampion = getMostFrequentChampion(summonerInfo["champions"]);
+    reply += `-Your most recent frequent champion has been **${mostFrequentChampion}**.\n`;
+
     reply += "\nMore analysis can and will be done in this information, more to come soon!";
 
     return reply;
+}
+
+function getMostFrequentChampion(championList){
+    const championDict = {}
+    for (const i in championList){
+        const champion = championList[i];
+        if (championDict[champion]){
+            championDict[champion] += 1;
+        }
+        else{
+            championDict[champion] = 1;
+        }
+    }
+
+    const result = Object.entries(championDict).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+    console.log(result);
+    return result;
+}
+
+function calculateWinRatio(winList){
+    let numWins = 0;
+    for (const i in winList){
+        if (winList[i] == "won") numWins++;
+    }
+
+    return ((numWins / winList.length) * 100)
 }
 
 async function getSummonerNameFromUUID(uuid){
