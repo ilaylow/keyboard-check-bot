@@ -22,6 +22,7 @@
     "cheerio": "^1.0.0-rc.10",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
+    "images-scraper": "^6.4.0",
     "kayn": "^0.10.2",
     "pretty": "^2.0.0",
     "request-promise": "^4.2.6"

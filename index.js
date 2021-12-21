@@ -6,6 +6,13 @@ const Discord = require('discord.js');
 const bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES] });
 bot.commands = new Discord.Collection();
 const botCommands = require('./commands');
+const Scraper = require('images-scraper');
+
+const google = new Scraper({
+  puppeteer: {
+    headless: true
+  }
+})
 
 // Logins in the bot with the token
 const TOKEN = process.env.BOT_TOKEN;
@@ -20,8 +27,21 @@ Object.keys(botCommands).map(key => {
 bot.on('ready', () => {
     console.info(`Logged in as ${bot.user.tag}!`);
     bot.user.setPresence({ activities: [{ name: 'Mama Fauna', type: "WATCHING", url: "https://www.youtube.com/channel/UCO_aKKYxn4tvrqPjcTzZ6EQ" }], status: 'available'});
-});
+    setInterval(async () => {
 
+      try {
+        const urls = await google.scrape("cute dog", 100);
+        const result = urls[Math.floor(Math.random() * urls.length)].url
+        const channel = bot.channels.cache.get('868923793953947660');
+        
+        channel.send("Here's your random dog pic!");
+        await channel.send({files: [String(result)]});
+
+      } catch (e){
+        console.log("Something went wrong...")
+      }
+    }, 17280000);
+  });
 
   // Bot listens to an event of message
 bot.on('message', msg => {
