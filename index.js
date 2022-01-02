@@ -24,7 +24,8 @@ const spidermanQuotes = ["You can't do this to me... I started this company... D
 "'I need that MONEY' - Peter Parker Needing That Money\nhttps://youtu.be/iCAaBWmKTDg",
 "'I missed the part where that's my problem' - Peter Parker Not Having A Problem\nhttps://youtu.be/iCAaBWmKTDg?t=8",
 "'The power of the sun... in the palm of my hand' - Otto Octavius With The Sun In The Palm Of His Hand\nhttps://youtu.be/_UCSZz3U7qU?t=7",
-"'You got any with nuts? Go make me some. - Peter Parker Wanting Cookies With Nuts\nhttps://youtu.be/IldJm79CZKw?t=40"]
+"'You got any with nuts? Go make me some. - Peter Parker Wanting Cookies With Nuts\nhttps://youtu.be/IldJm79CZKw?t=40",
+"'You know, I'm something of a scientist myself. - Norman Osborn as a Scientist\nhttps://www.youtube.com/watch?v=D_oTxsHK5d8&ab_channel=TheCheat"]
 
 // Logins in the bot with the token
 const TOKEN = process.env.BOT_TOKEN;
@@ -53,6 +54,10 @@ bot.on('ready', () => {
         console.log("Something went wrong...")
       }
     }, 17280000); */
+    const channel = bot.channels.cache.get('868923793953947660');
+    const randomQuoteIndex = Math.floor(Math.random() * (spidermanQuotes.length))
+    channel.send(spidermanQuotes[randomQuoteIndex])
+    
     setInterval(async () => {
 
       // Pick a random quote from the long list of spiderman quotes...
