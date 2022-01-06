@@ -7,6 +7,7 @@ const bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord
 bot.commands = new Discord.Collection();
 const botCommands = require('./commands');
 const Scraper = require('images-scraper');
+const database = require('./dbConnect');
 
 const google = new Scraper({
   puppeteer: {
@@ -38,6 +39,7 @@ Object.keys(botCommands).map(key => {
 
 // When the bot has logged in successfully
 bot.on('ready', () => {
+    database.connectDb();
     console.info(`Logged in as ${bot.user.tag}!`);
     bot.user.setPresence({ activities: [{ name: 'Mama Fauna', type: "WATCHING", url: "https://www.youtube.com/channel/UCO_aKKYxn4tvrqPjcTzZ6EQ" }], status: 'available'});
     /* setInterval(async () => {
@@ -54,10 +56,10 @@ bot.on('ready', () => {
         console.log("Something went wrong...")
       }
     }, 17280000); */
-    const channel = bot.channels.cache.get('868923793953947660');
+    /* const channel = bot.channels.cache.get('868923793953947660');
     const randomQuoteIndex = Math.floor(Math.random() * (spidermanQuotes.length))
     channel.send(spidermanQuotes[randomQuoteIndex])
-    
+
     setInterval(async () => {
 
       // Pick a random quote from the long list of spiderman quotes...
@@ -65,7 +67,7 @@ bot.on('ready', () => {
       const randomQuoteIndex = Math.floor(Math.random() * (spidermanQuotes.length))
       channel.send(spidermanQuotes[randomQuoteIndex])
 
-    }, 3600000);
+    }, 3600000); */
   });
 
   // Bot listens to an event of message
@@ -75,6 +77,11 @@ bot.on('message', msg => {
 
     if (!command.startsWith('~')) return;
     else command = command.slice(1);
+
+    if (msg.channelId !== "918417974573027358"){
+      msg.reply("Please use the **bot-test** channel!");
+      return;
+    }
 
     let args = msgSplit.slice(1);
     console.log(msgSplit);

@@ -24,6 +24,7 @@
     "dotenv": "^10.0.0",
     "images-scraper": "^6.4.0",
     "kayn": "^0.10.2",
+    "mongoose": "^6.1.4",
     "pretty": "^2.0.0",
     "request-promise": "^4.2.6"
   },

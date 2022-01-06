@@ -4,5 +4,7 @@ module.exports = {
     Help: require("./help"),
     SummonerStatus: require('./summonerStatus'),
     ChampionRotation: require('./getRotation'),
-    InRotation: require('./inRotation')
+    InRotation: require('./inRotation'),
+    PopulateDatabase: require('./populateLeagueDatabase'),
+    GetRunes: require('./getRunes')
   };

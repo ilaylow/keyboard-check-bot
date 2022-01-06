@@ -4,6 +4,7 @@ const axios = require("axios");
 const champions = require("../data/champion.json");
 const items = require("../data/item.json");
 const runes = require("../data/runesReforged.json");
+const runeModel = require("../models/ChampionRuneSchema");
 
 const headerObj = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
@@ -11,6 +12,128 @@ const headerObj = {
     "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
     "Origin": "https://developer.riotgames.com",
     "X-Riot-Token": riotKey
+}
+
+async function getRunesForChampion(champion){
+    console.log(champion);
+    const result = await runeModel.ChampionRuneModel.findOne({champion: champion})
+    
+    if (!result){
+        return "**Sorry**, this champion does **not exist** in the current database..."
+    }
+    // This gets the runes of our champion
+    const primaryRunes = result.runes[0];
+    const secondaryRunes = result.runes[1]
+    const statPerks = result.statPerks;
+
+    const primarySlots = getRuneStyle(primaryRunes.style)
+    const secondarySlots = getRuneStyle(secondaryRunes.style).slice(1)
+
+    const primarySlotArr = getRuneSlotPrimaryArray(primaryRunes, primarySlots);
+
+    const combinedSecondarySlots = (secondarySlots[0].runes.concat(secondarySlots[1].runes)).concat(secondarySlots[2].runes);
+    const secondarySlotArr = getRuneSlotSecondaryArray(secondaryRunes, combinedSecondarySlots);
+
+    console.log(primarySlotArr)
+    console.log(secondarySlotArr);
+    console.log(statPerks);
+}
+
+function getRuneSlotPrimaryArray(runes, slots){
+    let slotArr = [];
+
+    for (const i in slots){
+        const currPerkNum = runes.selections[i].perk  
+        const currRow = slots[i].runes
+
+        let slotNum = 0;
+        while (currRow[slotNum].id != currPerkNum){
+            slotNum += 1;
+        }
+        slotArr.push(slotNum + 1)
+    }
+
+    return slotArr;
+}
+
+function getRuneSlotSecondaryArray(runes, slots){
+    
+    let slotArr = []
+    for (const i in runes.selections){
+        let indexNum = 0;
+        while (slots[indexNum].id != runes.selections[i].perk){
+            indexNum += 1
+        }
+        slotArr.push(indexNum + 1);
+    }
+
+    const rowNum1 = Math.floor(slotArr[0] / 3)
+    const colNum1 = slotArr[0] - (rowNum1 * 3) - 1;
+
+    const rowNum2 = Math.floor(slotArr[1] / 3)
+    const colNum2 = slotArr[1] - (rowNum2 * 3) - 1;
+
+    return [[rowNum1, colNum1], [rowNum2, colNum2]]
+}
+
+function getRuneStyle(styleId){
+    for (const i in runes){
+        if (runes[i].id == styleId){
+            return runes[i].slots;
+        }
+    }
+}
+
+async function extractRunesFromHistory(summonerName, historyLen){
+    const requestSummonerlink = `https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`;
+
+    try {
+        const res = await axios.get(requestSummonerlink,{headers: headerObj});
+
+        const puuid = res.data.puuid;
+        
+        const requestMatchlink = `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${historyLen}`;
+        const resMatch = (await axios.get(requestMatchlink, {headers: headerObj})).data;
+        const championRuneDict = {};
+
+        for (const i in resMatch){
+            const matchId = resMatch[i];
+
+            const requestMatchInfoLink = `https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`;
+            const matchInfoRes = (await axios.get(requestMatchInfoLink,  {headers: headerObj})).data;
+
+            for (const j in matchInfoRes.info.participants){
+                
+                if (matchInfoRes.info.participants[j].summonerName.toLowerCase() == summonerName.toLowerCase()){
+                    console.log(matchInfoRes.info.participants[j].perks)
+
+                    if (!championRuneDict[matchInfoRes.info.participants[j].championName]){
+                        championRuneDict[matchInfoRes.info.participants[j].championName] = [matchInfoRes.info.participants[j].perks]
+                    } else{
+                        championRuneDict[matchInfoRes.info.participants[j].championName].push(matchInfoRes.info.participants[j].perks);
+                    }
+
+                }
+            }
+        }
+
+        console.log(championRuneDict)
+        console.log(runeModel)
+        for (let key in championRuneDict){
+            let entry = championRuneDict[key]
+            let runeEntry = entry[0];
+            console.log(runeEntry)
+            await runeModel.ChampionRuneModel.create({champion: String(key).toLowerCase(), runes: runeEntry.styles, statPerks: runeEntry.statPerks})
+        }
+        
+
+    } catch(err){
+        console.error(err);
+        if (err.response.statusText === "Not Found"){
+            return "Summoner not found. Please enter a valid name!";
+        }
+        return err;
+    }
 }
 
 async function getSummonerDetails(summonerName){
@@ -184,6 +307,8 @@ async function inRotation(championName){
 module.exports = {
     getRotationList,
     getSummonerDetails,
-    inRotation
+    inRotation,
+    extractRunesFromHistory,
+    getRunesForChampion
 }
 
