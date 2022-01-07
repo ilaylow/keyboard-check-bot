@@ -1,5 +1,5 @@
 const leagueFunctions = require('../helper/obtainLeagueDetails');
-const user = "hi Im Yasuo";
+const user = "Exalted";
 
 module.exports = {
     name: 'populateleaguedatabase',

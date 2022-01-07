@@ -176,7 +176,10 @@ async function extractRunesFromHistory(summonerName, historyLen){
             let entry = championRuneDict[key]
             let runeEntry = entry[0];
             console.log(runeEntry)
-            await runeModel.ChampionRuneModel.create({champion: String(key).toLowerCase(), runes: runeEntry.styles, statPerks: runeEntry.statPerks})
+            const presentChampion = await runeModel.ChampionRuneModel.findOne({champion: String(key).toLowerCase()})
+            if (!presentChampion){
+                await runeModel.ChampionRuneModel.create({champion: String(key).toLowerCase(), runes: runeEntry.styles, statPerks: runeEntry.statPerks})
+            }
         }
         
 
