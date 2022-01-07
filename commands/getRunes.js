@@ -6,7 +6,8 @@ module.exports = {
     async execute(msg, args) {
         const championName = args[0].toLowerCase();
 
-        leagueFunctions.getRunesForChampion(championName);
-
+        let reply = await leagueFunctions.getRunesForChampion(championName);
+        reply += "\nBest of luck in your game! ^-^"
+        msg.reply(reply);
     },
   };

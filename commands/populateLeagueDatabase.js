@@ -11,7 +11,7 @@ module.exports = {
         }
 
         msg.reply("Populating database...")
-        await leagueFunctions.extractRunesFromHistory(user, 50);
+        await leagueFunctions.extractRunesFromHistory(user, 75);
 
         msg.reply("Completed!")
     },

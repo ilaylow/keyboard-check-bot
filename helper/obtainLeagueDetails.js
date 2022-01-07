@@ -21,22 +21,75 @@ async function getRunesForChampion(champion){
     if (!result){
         return "**Sorry**, this champion does **not exist** in the current database..."
     }
+
     // This gets the runes of our champion
     const primaryRunes = result.runes[0];
     const secondaryRunes = result.runes[1]
     const statPerks = result.statPerks;
 
-    const primarySlots = getRuneStyle(primaryRunes.style)
-    const secondarySlots = getRuneStyle(secondaryRunes.style).slice(1)
+    const primaryObj = getRuneStyle(primaryRunes.style)
+    const secondaryObj = getRuneStyle(secondaryRunes.style)
+
+    const primarySlots = primaryObj.slots;
+    const secondarySlots = secondaryObj.slots.slice(1);
 
     const primarySlotArr = getRuneSlotPrimaryArray(primaryRunes, primarySlots);
 
     const combinedSecondarySlots = (secondarySlots[0].runes.concat(secondarySlots[1].runes)).concat(secondarySlots[2].runes);
     const secondarySlotArr = getRuneSlotSecondaryArray(secondaryRunes, combinedSecondarySlots);
 
-    console.log(primarySlotArr)
-    console.log(secondarySlotArr);
-    console.log(statPerks);
+    const primaryMsg = printPrimarySlots(primarySlotArr, primaryObj.name);
+    const secondaryMsg = printSecondarySlots(secondarySlotArr, secondaryObj.name);
+
+    console.log(primaryMsg + secondaryMsg);
+    return primaryMsg + secondaryMsg;
+}
+
+function printPrimarySlots(arr, name){
+    let msg = "**Primary**\n" + name + "\n\n";
+
+    const slotSizeArr = [4,3,3,3]
+
+    for (const i in slotSizeArr){
+        for (let j=0; j < slotSizeArr[i]; j++){
+            if (arr[i]-1 == j){
+                msg += " x"
+            }
+            else{
+                msg += " o"                
+            }
+        }
+        msg += "\n"
+    }
+    
+    msg += "\n"
+
+    return msg
+}
+
+function printSecondarySlots(arr, name){
+    let slotSizeArr;
+    if (name === "Domination"){
+        slotSizeArr = [3,3,4]
+    } else{
+        slotSizeArr = [3,3,3]
+    }
+
+    let msg = "**Secondary**\n" + name + "\n\n";
+
+    for (const i in slotSizeArr){
+        for (let j = 0; j < slotSizeArr[i]; j++){
+            if ((arr[0][0] == i && arr[0][1] == j) || (arr[1][0] == i && arr[1][1] == j)){
+                msg += " x"
+            }
+            else{
+                msg += " o"
+            }
+        }
+        msg += "\n";
+    }
+
+    return msg;
 }
 
 function getRuneSlotPrimaryArray(runes, slots){
@@ -64,14 +117,14 @@ function getRuneSlotSecondaryArray(runes, slots){
         while (slots[indexNum].id != runes.selections[i].perk){
             indexNum += 1
         }
-        slotArr.push(indexNum + 1);
+        slotArr.push(indexNum);
     }
 
     const rowNum1 = Math.floor(slotArr[0] / 3)
-    const colNum1 = slotArr[0] - (rowNum1 * 3) - 1;
+    const colNum1 = slotArr[0] - (rowNum1 * 3);
 
     const rowNum2 = Math.floor(slotArr[1] / 3)
-    const colNum2 = slotArr[1] - (rowNum2 * 3) - 1;
+    const colNum2 = slotArr[1] - (rowNum2 * 3);
 
     return [[rowNum1, colNum1], [rowNum2, colNum2]]
 }
@@ -79,7 +132,7 @@ function getRuneSlotSecondaryArray(runes, slots){
 function getRuneStyle(styleId){
     for (const i in runes){
         if (runes[i].id == styleId){
-            return runes[i].slots;
+            return runes[i];
         }
     }
 }
